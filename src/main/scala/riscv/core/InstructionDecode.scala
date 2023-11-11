@@ -195,7 +195,13 @@ class InstructionDecode extends Module {
   )
 
   // lab3(InstructionDecode) begin
-
+  when(opcode === InstructionTypes.S) {
+    io.memory_read_enable  := false.B
+    io.memory_write_enable := true.B
+  }.otherwise {
+    io.memory_read_enable  := true.B
+    io.memory_write_enable := false.B
+  }
   // lab3(InstructionDecode) end
 
   io.wb_reg_write_source := MuxCase(
