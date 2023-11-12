@@ -25,11 +25,7 @@ class InstructionFetch extends Module {
   when(io.instruction_valid) {
     io.instruction := io.instruction_read_data
     // lab3(InstructionFetch) begin
-    when(io.jump_flag_id) {
-      pc := io.jump_address_id
-    }.otherwise {
-      pc := pc + 4.U
-    }
+    pc := Mux(io.jump_flag_id, io.jump_address_id, pc + 4.U)
     // lab3(InstructionFetch) end
 
   }.otherwise {
