@@ -25,6 +25,12 @@ class Top extends Module {
   cpu.io.instruction     := io.instruction
 
   cpu.io.instruction_valid := io.instruction_valid
+
+  io.ecall_flag := cpu.io.ecall_flag
+  io.ecall_a0   := cpu.io.ecall_a0
+  io.ecall_a1   := cpu.io.ecall_a1
+  io.ecall_a2   := cpu.io.ecall_a2
+  io.ecall_a7   := cpu.io.ecall_a7
 }
 
 object VerilogGenerator extends App {

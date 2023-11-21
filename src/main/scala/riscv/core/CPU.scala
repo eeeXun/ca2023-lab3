@@ -5,6 +5,7 @@ package riscv.core
 
 import chisel3._
 import chisel3.util.Cat
+import riscv.core.RegisterFile
 import riscv.CPUBundle
 import riscv.Parameters
 
@@ -47,6 +48,11 @@ class CPU extends Module {
   ex.io.aluop1_source       := id.io.ex_aluop1_source
   ex.io.aluop2_source       := id.io.ex_aluop2_source
   // lab3(cpu) end
+  io.ecall_flag := id.io.ecall_flag
+  io.ecall_a0   := regs.io.ecall_a0
+  io.ecall_a1   := regs.io.ecall_a1
+  io.ecall_a2   := regs.io.ecall_a2
+  io.ecall_a7   := regs.io.ecall_a7
 
   mem.io.alu_result          := ex.io.mem_alu_result
   mem.io.reg2_data           := regs.io.read_data2

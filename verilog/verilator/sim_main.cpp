@@ -2,6 +2,7 @@
 #include <verilated_vcd_c.h>
 
 #include <algorithm>
+#include <cstdio>
 #include <fstream>
 #include <iostream>
 #include <memory>
@@ -9,6 +10,8 @@
 #include <vector>
 
 #include "VTop.h"  // From Verilating "top.v"
+
+#define ECALL_WRITE 64
 
 class Memory
 {
@@ -230,6 +233,29 @@ public:
                     std::cout << "halted\n";
                     break;
                 }
+            }
+
+            if (top->io_ecall_flag) {
+                std::cout << "ecall begin\n";
+                switch (top->io_ecall_a7) {
+                case ECALL_WRITE:
+                    int index = top->io_ecall_a1;
+                    int length = top->io_ecall_a2;
+                    int tmp;
+
+                    while (length > 0) {
+                        tmp = memory->read(index);
+                        for (int i = 0; i < 4; i++) {
+                            if (length < 0)
+                                break;
+                            std::cout << char(tmp >> (8 * i));
+                            length--;
+                        }
+                        index += 4;
+                    }
+                    break;
+                }
+                std::cout << "ecall end\n";
             }
 
             /* show progress */

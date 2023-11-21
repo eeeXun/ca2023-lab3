@@ -16,4 +16,9 @@ class CPUBundle extends Bundle {
   val deviceSelect        = Output(UInt(Parameters.SlaveDeviceCountBits.W))
   val debug_read_address  = Input(UInt(Parameters.PhysicalRegisterAddrWidth))
   val debug_read_data     = Output(UInt(Parameters.DataWidth))
+  val ecall_flag          = Output(Bool())
+  val ecall_a0            = Output(UInt(Parameters.DataWidth))
+  val ecall_a1            = Output(UInt(Parameters.DataWidth))
+  val ecall_a2            = Output(UInt(Parameters.DataWidth))
+  val ecall_a7            = Output(UInt(Parameters.DataWidth))
 }
