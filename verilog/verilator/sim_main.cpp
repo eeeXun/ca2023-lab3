@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <cstdio>
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <memory>
@@ -12,6 +13,7 @@
 #include "VTop.h"  // From Verilating "top.v"
 
 #define ECALL_WRITE 64
+#define ECALL_EXIT 93
 
 class Memory
 {
@@ -236,17 +238,15 @@ public:
             }
 
             if (top->io_ecall_flag) {
-                std::cout << "ecall begin\n";
                 switch (top->io_ecall_a7) {
-                case ECALL_WRITE:
+                case ECALL_WRITE: {
                     int index = top->io_ecall_a1;
                     int length = top->io_ecall_a2;
                     int tmp;
-
                     while (length > 0) {
                         tmp = memory->read(index);
                         for (int i = 0; i < 4; i++) {
-                            if (length < 0)
+                            if (length <= 0)
                                 break;
                             std::cout << char(tmp >> (8 * i));
                             length--;
@@ -255,7 +255,13 @@ public:
                     }
                     break;
                 }
-                std::cout << "ecall end\n";
+                case ECALL_EXIT: {
+                    std::cout << "exit code: " << top->io_ecall_a0 << '\n';
+                    std::cout << "exit time: " << main_time << '\n';
+                    exit(top->io_ecall_a0);
+                    break;
+                }
+                }
             }
 
             /* show progress */
